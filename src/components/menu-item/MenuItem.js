@@ -22,4 +22,6 @@ const MenuItem = ({ title, imageUrl, size, linkUrl, history, match }) => {
   );
 };
 
+// withRouter returns a new component with the routes properties available (match, location, history)
+// so we do not have to push them down as other properties
 export default withRouter(MenuItem);
