@@ -6,6 +6,7 @@ import Header from "./components/header/Header";
 import SignInPage from "./pages/sign-in-page/SignInPage";
 import { auth } from "./firebase/firebase.utils";
 import React from "react";
+import { createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends React.PureComponent {
   constructor() {
@@ -19,9 +20,8 @@ class App extends React.PureComponent {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+      createUserProfileDocument(user);
     });
   }
 
