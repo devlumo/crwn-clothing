@@ -40,6 +40,7 @@ class App extends React.PureComponent {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
         <Header currentUser={this.state.currentUser} />

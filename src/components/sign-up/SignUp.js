@@ -2,12 +2,12 @@ import React from "react";
 
 import FormInput from "../form-input/FormInput";
 import CustomButton from "../custom-button/CustomButton";
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 
 import "./sign-up.styles.scss";
 
-export default class SignUp extends Component {
+export default class SignUp extends React.Component {
   constructor() {
     super();
 
@@ -22,13 +22,14 @@ export default class SignUp extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       alert("Password doesn't match");
       return;
     }
 
     try {
-      const { user } = await auth.createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
         email,
         password
       );
@@ -63,24 +64,28 @@ export default class SignUp extends Component {
             type="test"
             name="displayName"
             value={displayName}
+            onChange={this.handleChange}
             label="Display Name"
           ></FormInput>
           <FormInput
             type="email"
             name="email"
             value={email}
+            onChange={this.handleChange}
             label="Email"
           ></FormInput>
           <FormInput
             type="password"
             name="password"
             value={password}
+            onChange={this.handleChange}
             label="Password"
           ></FormInput>
           <FormInput
             type="password"
             name="confirmPassword"
             value={confirmPassword}
+            onChange={this.handleChange}
             label="Confirm Password"
           ></FormInput>
           <CustomButton type="submit">SIGN UP</CustomButton>
