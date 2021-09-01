@@ -20,8 +20,18 @@ class App extends React.PureComponent {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
-      createUserProfileDocument(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        this.setState({
+          currentUser: {
+            id: userRef.id,
+            ...userRef.data(),
+          },
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 

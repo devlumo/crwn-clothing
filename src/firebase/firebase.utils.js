@@ -23,10 +23,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const docRef = doc(db, "users", userAuth.uid);
   const docSnap = await getDoc(docRef);
 
-  console.log(docRef, docSnap);
-
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
+    // console.log("Document data:", docSnap);
   } else {
     // doc.data() will be undefined in this case
     const { displayName, email } = userAuth;
@@ -42,9 +40,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     } catch (error) {
       console.log("Error creating user: ", error.message);
     }
-
-    return docRef;
   }
+  return docSnap;
 };
 
 const provider = new GoogleAuthProvider();
