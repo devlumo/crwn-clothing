@@ -1,14 +1,19 @@
+import React from "react";
 import "./App.scss";
 import Homepage from "./pages/hompage/Homepage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Shop from "./pages/shop/Shop";
 import Header from "./components/header/Header";
 import SignInPage from "./pages/sign-in-page/SignInPage";
+import Checkout from "./pages/checkout/Checkout";
+
 import { auth } from "./firebase/firebase.utils";
-import React from "react";
+
 import { createUserProfileDocument } from "./firebase/firebase.utils";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -39,6 +44,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Homepage} />;
           <Route exact path="/shop" component={Shop} />;
+          <Route exaxt path="/checkout" component={Checkout} />;
           <Route
             exact
             path="/sign-in"
@@ -52,8 +58,8 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
 });
 
 // the dispatch is the only way to update the state in a store
