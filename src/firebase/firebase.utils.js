@@ -1,6 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore, getDoc, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBleybloVD_jJnZgG760xaawqbM24B1J3g",
@@ -43,6 +50,22 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
   return docSnap;
+};
+
+// Can be used to add a new collection and documents to it in firebase when called
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = doc(collectionRef);
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
 };
 
 const provider = new GoogleAuthProvider();
